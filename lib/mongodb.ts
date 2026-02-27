@@ -1,8 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const uri =
-  (process.env.MONGODB_URI as string) ||
-  "mongodb+srv://admin:ntsCxxUxstbuMs09@todoapp-cluster.lie4m0p.mongodb.net/?appName=todoapp-cluster";
+const uri = process.env.MONGODB_URI as string;
 
 if (!uri) {
   throw new Error("Please add MONGODB_URI to .env.local");
