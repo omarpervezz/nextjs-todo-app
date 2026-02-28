@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
 import { subscribeToMutations } from "@/lib/mutation-events";
 import { RefreshCcw } from "lucide-react";
+import { AuditLog } from "@/types/audit";
 
 export default function AuditSidebar() {
-  const [logs, setLogs] = useState<any[]>([]);
+  const [logs, setLogs] = useState<AuditLog[]>([]);
 
   async function fetchLogs() {
     const res = await fetch("/api/audit");

@@ -8,7 +8,15 @@ import ConfirmModal from "./ConfirmModal";
 import { Trash2, Loader2 } from "lucide-react";
 import { emitMutationEvent } from "@/lib/mutation-events";
 
-export default function TodoItem({ todo }: any) {
+type Todo = {
+  _id: string;
+  title: string;
+  completed: boolean;
+  isPending?: boolean;
+  version: number;
+};
+
+export default function TodoItem({ todo }: { todo: Todo }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,7 +60,7 @@ export default function TodoItem({ todo }: any) {
     px-4 py-3
     transition-all duration-300
     hover:bg-slate-50
-    ${isPending || isDeleting ? "opacity-50 pointer-events-none" : ""}
+    ${isPending || isDeleting || todo.isPending ? "opacity-80 pointer-events-none" : ""}
   `}
       >
         {/* Left Section */}
@@ -61,7 +69,7 @@ export default function TodoItem({ todo }: any) {
             type="checkbox"
             checked={todo.completed}
             onChange={handleToggle}
-            disabled={isPending}
+            disabled={isPending || todo.isPending}
             className="h-4 w-4 accent-blue-600 cursor-pointer"
           />
 
@@ -101,6 +109,11 @@ export default function TodoItem({ todo }: any) {
               </>
             )}
           </button>
+          {todo.isPending && (
+            <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-600">
+              Pending...
+            </span>
+          )}
         </div>
       </li>
 

@@ -11,12 +11,17 @@ import { TodoSchema } from "@/lib/validations";
 import SearchBar from "./SearchBar";
 import { emitMutationEvent } from "@/lib/mutation-events";
 import EmptyState from "./EmptyState";
+import { Todo } from "@/types/todo";
 
-export default function TodoList({ initialTodos }: any) {
+type Props = {
+  initialTodos: Todo[];
+};
+
+export default function TodoList({ initialTodos }: Props) {
   const [isPending, startTransition] = useTransition();
   const [optimisticTodos, addOptimisticTodo] = useOptimistic(
     initialTodos,
-    (state, newTodo: any) => [...state, newTodo],
+    (state, newTodo: any) => [newTodo, ...state],
   );
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -112,7 +117,12 @@ export default function TodoList({ initialTodos }: any) {
 
   return (
     <div className="p-5">
-      <SearchBar value={query} onChange={setQuery} />
+      {isPending && (
+        <div className="mt-4 text-center text-sm text-slate-500">
+          Syncing changes...
+        </div>
+      )}
+      <SearchBar value={query} onChange={setQuery} isSearching={isSearching} />
       <CreateForm onSubmit={handleCreate} error={error} />
       <div className="mt-4">
         {isEmpty ? (

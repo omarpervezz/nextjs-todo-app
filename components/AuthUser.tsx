@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { signOut } from "next-auth/react";
@@ -22,9 +21,9 @@ export default function AuthUser({ name, image }: Props) {
 
         {/* Right: User Controls */}
         <div className="flex items-center gap-3">
-          {/* Profile Info */}
           <div className="flex items-center gap-2 rounded-full px-3 py-1 bg-slate-100 transition">
             {image && (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={image}
                 alt="avatar"
