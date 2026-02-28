@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { TodoSchema } from "@/lib/validations";
 import SearchBar from "./SearchBar";
 import { emitMutationEvent } from "@/lib/mutation-events";
+import EmptyState from "./EmptyState";
 
 export default function TodoList({ initialTodos }: any) {
   const [isPending, startTransition] = useTransition();
@@ -25,6 +26,9 @@ export default function TodoList({ initialTodos }: any) {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const requestIdRef = useRef(0);
+  const isSearchingActive = debouncedQuery.trim().length > 0;
+  const todosToRender = isSearchingActive ? searchResults : optimisticTodos;
+  const isEmpty = todosToRender.length === 0;
 
   async function handleCreate(formData: FormData) {
     const rawTitle = formData.get("title") as string;
@@ -107,16 +111,20 @@ export default function TodoList({ initialTodos }: any) {
   }, [debouncedQuery]);
 
   return (
-    <div>
+    <div className="p-5">
       <SearchBar value={query} onChange={setQuery} />
       <CreateForm onSubmit={handleCreate} error={error} />
-      <ul className="space-y-2 mt-6">
-        {(debouncedQuery.trim() ? searchResults : optimisticTodos).map(
-          (todo: any) => (
-            <TodoItem key={todo._id} todo={todo} />
-          ),
+      <div className="mt-4">
+        {isEmpty ? (
+          <EmptyState isSearching={isSearchingActive} />
+        ) : (
+          <ul className="space-y-3">
+            {todosToRender.map((todo: any) => (
+              <TodoItem key={todo._id} todo={todo} />
+            ))}
+          </ul>
         )}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -8,12 +8,30 @@ export default async function Home() {
   const todos = await getTodos(userId);
 
   return (
-    <main className="flex">
-      <div className="flex-1 max-w-xl mx-auto mt-10">
-        <h1 className="text-2xl font-bold mb-6">Todo App</h1>
-        <TodoList initialTodos={todos} />
+    <main className="flex bg-slate-50 min-h-[calc(100vh-56px)]">
+      {/* Main Content */}
+      <div className="flex-1 flex justify-center px-6 py-6">
+        <div className="w-full max-w-xl bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col max-h-[calc(100vh-280px)]">
+          <div className="mb-4">
+            <h1 className="text-lg font-medium tracking-tight text-slate-800">
+              My Tasks
+            </h1>
+            <p className="text-sm text-slate-600 mt-1">
+              Manage and organize your tasks efficiently.
+            </p>
+          </div>
+
+          {/* Scrollable List Area */}
+          <div className="flex-1 overflow-y-hidden hover:overflow-y-auto">
+            <TodoList initialTodos={todos} />
+          </div>
+        </div>
       </div>
-      <AuditSidebar />
+
+      {/* Sidebar */}
+      <div className="hidden lg:block border-l border-slate-200 bg-white">
+        <AuditSidebar />
+      </div>
     </main>
   );
 }

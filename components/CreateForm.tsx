@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-export default function CreateForm({ onSubmit, error }: any) {
+import { Plus } from "lucide-react";
+
+type Props = {
+  onSubmit: (formData: FormData) => Promise<any>;
+  error: string | null;
+};
+
+export default function CreateForm({ onSubmit, error }: Props) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -9,28 +16,28 @@ export default function CreateForm({ onSubmit, error }: any) {
     const formData = new FormData(form);
 
     const result = await onSubmit(formData);
-
-    if (result?.error) {
-      return;
-    }
+    if (result?.error) return;
 
     form.reset();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 mt-4">
+    <form onSubmit={handleSubmit} className="mb-4">
       <div className="flex gap-2">
         <input
           name="title"
           placeholder="Add todo..."
-          className="border p-2 flex-1 rounded"
+          className="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
         />
-        <button type="submit" className="bg-black text-white px-4 rounded">
-          Add
+        <button
+          type="submit"
+          className="flex gap-x-1.5 items-center rounded-lg bg-blue-600 text-white px-4 py-2 text-sm font-medium hover:bg-blue-700 active:scale-95 transition cursor-pointer"
+        >
+          <Plus className="h-4 w-4" /> Create New Todo
         </button>
       </div>
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
     </form>
   );
 }
