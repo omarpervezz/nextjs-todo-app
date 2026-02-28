@@ -18,6 +18,7 @@ type Props = {
 };
 
 export default function TodoList({ initialTodos }: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPending, startTransition] = useTransition();
   const [optimisticTodos, addOptimisticTodo] = useOptimistic(
     initialTodos,
@@ -40,7 +41,6 @@ export default function TodoList({ initialTodos }: Props) {
 
     const parsed = TodoSchema.safeParse({ title: rawTitle });
 
-    // 🚫 If invalid, stop immediately
     if (!parsed.success) {
       setError(parsed.error.flatten().fieldErrors.title?.[0] ?? null);
       return;
@@ -117,11 +117,6 @@ export default function TodoList({ initialTodos }: Props) {
 
   return (
     <div className="p-5">
-      {isPending && (
-        <div className="mt-4 text-center text-sm text-slate-500">
-          Syncing changes...
-        </div>
-      )}
       <SearchBar value={query} onChange={setQuery} isSearching={isSearching} />
       <CreateForm onSubmit={handleCreate} error={error} />
       <div className="mt-4">
