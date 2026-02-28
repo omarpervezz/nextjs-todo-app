@@ -7,7 +7,7 @@ export default async function SignInPage() {
   const session = await getServerSession(authOptions);
 
   if (session) {
-    redirect("/"); // or "/todos" depending on your app route
+    redirect("/");
   }
 
   return (

@@ -8,8 +8,6 @@ export async function requireUserId() {
   const userId = (session?.user as any)?.id;
 
   if (!userId) {
-    // This is for server actions / route handlers:
-    // middleware will usually prevent this, but we still guard.
     throw new Error("Unauthorized");
   }
 
